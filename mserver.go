@@ -3,8 +3,11 @@
 // license that can be found in the LICENSE file.
 
 // Package mserver is a wrapper around `net/http` HTTP Server for Graceful shutdown of web server upon
+//
 // - SIGINT SIGKILL signals sent to the application
+//
 // - Internal Errors of the web server
+//
 package mserver
 
 import (
