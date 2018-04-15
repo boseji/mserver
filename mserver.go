@@ -157,6 +157,20 @@ func (p *Mserver) GracefulStop(waitForInterrupt bool) error {
 	return p.stopServerInternal()
 }
 
+// ForceStop provides a forced way to terminate further processing by sending a false
+//  kill signal to a graseful shutdown running function
+func (p *Mserver) ForceStop() {
+
+	if !p.started {
+		return
+	}
+
+	// Stop the Channel from receiving any further event
+	signal.Stop(p.stop)
+	// Send a Simulated kill event to Server
+	p.stop <- os.Kill
+}
+
 // NewMserver creates a default Instance of the `Mserver` type and then calls
 //   the `StartDefaultServer` to begin default server operation.
 func NewMserver(addr string, timeout time.Duration) *Mserver {
