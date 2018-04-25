@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/boseji/mserver?status.svg)](https://godoc.org/github.com/boseji/mserver)
+
 # mserver
 Golang Managed server wrapper for http.Server to handle process SIGINT, SIGKILL, Ctrl+C and provide graceful shutdown of server
 
