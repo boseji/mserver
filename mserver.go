@@ -13,10 +13,12 @@ package mserver
 import (
 	"bytes"
 	"context"
+	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -267,4 +269,17 @@ func Sha512_256(data *bytes.Buffer) *bytes.Buffer {
 	m := sha512.New512_256()
 	io.Copy(m, data)
 	return bytes.NewBuffer(m.Sum(nil))
+}
+
+// Md5 function get the MD5 Hash from a given bytes.Buffer and
+// returns the result also in bytes.Buffer
+func Md5(data *bytes.Buffer) *bytes.Buffer {
+	m := md5.New()
+	io.Copy(m, data)
+	return bytes.NewBuffer(m.Sum(nil))
+}
+
+// BufToHexString converts the bytes.Buffer into a Hexadecimal string
+func BufToHexString(data *bytes.Buffer) string {
+	return fmt.Sprintf("%x", data.Bytes())
 }
