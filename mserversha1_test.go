@@ -9,14 +9,14 @@ import (
 	"testing"
 )
 
-type sha1Test struct {
+type shaTest struct {
 	out       string
 	in        string
 	halfState string // marshaled hash state after first half of in written, used by TestGoldenMarshal
 }
 
 // Testing Golden Strings
-var golden = []sha1Test{
+var golden1 = []shaTest{
 	{"76245dbf96f661bd221046197ab8b9f063f11bad", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n", "sha\x01\v\xa0)I\xdeq(8h\x9ev\xe5\x88[\xf8\x81\x17\xba4Daaaaaaaaaaaaaaaaaaaaaa\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x96"},
 	{"da39a3ee5e6b4b0d3255bfef95601890afd80709", "", "sha\x01gE#\x01\xef\u036b\x89\x98\xba\xdc\xfe\x102Tv\xc3\xd2\xe1\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"},
 	{"86f7e437faa5a7fce15d1ddcb9eaeaea377667b8", "a", "sha\x01gE#\x01\xef\u036b\x89\x98\xba\xdc\xfe\x102Tv\xc3\xd2\xe1\xf0\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"},
@@ -51,10 +51,10 @@ var golden = []sha1Test{
 	{"6627d6904d71420b0bf3886ab629623538689f45", "How can you write a big system without C++?  -Paul Glick", "sha\x01gE#\x01\xef\u036b\x89\x98\xba\xdc\xfe\x102Tv\xc3\xd2\xe1\xf0How can you write a big syst\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x1c"},
 }
 
-func TestGolden(t *testing.T) {
-	for i := 0; i < len(golden); i++ {
-		fmt.Println("Test:", i)
-		g := golden[i]
+func TestGolden1(t *testing.T) {
+	for i := 0; i < len(golden1); i++ {
+		//fmt.Println("Test Sha1:", i)
+		g := golden1[i]
 		b := Sha1(bytes.NewBufferString(g.in))
 		s := fmt.Sprintf("%x", b.Bytes())
 		if s != g.out {
@@ -65,25 +65,25 @@ func TestGolden(t *testing.T) {
 
 var buf = make([]byte, 8192)
 
-func benchmarkSize(b *testing.B, size int) {
+func benchmarkSizeSha1(b *testing.B, size int) {
 	b.SetBytes(int64(size))
 	for i := 0; i < b.N; i++ {
 		Sha1(bytes.NewBuffer(buf[:size]))
 	}
 }
 
-func BenchmarkHash8Bytes(b *testing.B) {
-	benchmarkSize(b, 8)
+func BenchmarkHash8BytesSha1(b *testing.B) {
+	benchmarkSizeSha1(b, 8)
 }
 
-func BenchmarkHash320Bytes(b *testing.B) {
-	benchmarkSize(b, 320)
+func BenchmarkHash320BytesSha1(b *testing.B) {
+	benchmarkSizeSha1(b, 320)
 }
 
-func BenchmarkHash1K(b *testing.B) {
-	benchmarkSize(b, 1024)
+func BenchmarkHash1KSha1(b *testing.B) {
+	benchmarkSizeSha1(b, 1024)
 }
 
-func BenchmarkHash8K(b *testing.B) {
-	benchmarkSize(b, 8192)
+func BenchmarkHash8KSha1(b *testing.B) {
+	benchmarkSizeSha1(b, 8192)
 }
